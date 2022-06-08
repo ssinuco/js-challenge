@@ -9,7 +9,7 @@ const getData = async (api) => {
   try {
     const response = await fetch(`${api}?offset=${offset}&limit=${limit}`)
     let products = await response.json();
-    let output = `<article class="Card"><h2>Todos los productos Obtenidos</h2></article`;
+    let output = [`<article class="Card"><h2>Todos los productos Obtenidos</h2></article`];
     if (products.length > 0) {
       output = products.map(product => {
         return `<article class="Card">
@@ -19,15 +19,17 @@ const getData = async (api) => {
             <small>$ ${product.price}</small>
           </h2>
         </article>`
-    });
+      });
     }
     else {
       intersectionObserver.disconnect();
     }
-    let newItem = document.createElement('section');
-    newItem.classList.add('Item');
-    newItem.innerHTML = output;
-    $app.appendChild(newItem);
+    output.forEach(elem => {
+      let newItem = document.createElement('section');
+      newItem.classList.add('Item');
+      newItem.innerHTML = elem;
+      $app.appendChild(newItem);
+    })
 
     localStorage.setItem('offset', offset);
 
